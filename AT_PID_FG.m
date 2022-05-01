@@ -1,5 +1,14 @@
-
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
+% Universidade Federal do Piauí                       %
+% Campus Ministro Petronio Portela                    %
+% Copyright 2022 -José Borges do Carmo Neto-          %
+% @author José Borges do Carmo Neto                   %
+% @email jose.borges90@hotmail.com                    %
+%  PID controllers for the Phase                      %
+%  and Gain Margins of the System                     % 
+%                                                     %
+%  -- Version: 1.0  - 30/04/2022                      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
 %% 1 - Tratando o processo:
 

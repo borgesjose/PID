@@ -1,4 +1,16 @@
-% 1 - Tratando o processo:
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
+% Universidade Federal do Piauí                       %
+% Campus Ministro Petronio Portela                    %
+% Copyright 2022 -José Borges do Carmo Neto-          %
+% @author José Borges do Carmo Neto                   %
+% @email jose.borges90@hotmail.com                    %
+%  PID controllers for the Phase                      %
+%  and Gain Margins of the System                     % 
+%                                                     %
+%  -- Version: 1.0  - 20/02/2022                      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+%% 1 - Tratando o processo:
 
 % Nesta etapa o processo é discretizado:
 % Sendo:
@@ -16,6 +28,7 @@
 
     ftz = c2d(ft,Tc,'zoh')
 
+%% 2 - rele:
 % Agora é o momento de aplicar o relé a planta: (rele com histerese)
 
 n = 200; % Numero de pontos de análise
@@ -30,11 +43,17 @@ nptos = 1000
 
 [yr,ur] = rele_h(n,Tc,dh,eps,[p1,p2],k); 
 
-%%
 figure;
 grid;
 plot(yr,'c-');
 hold on;
 plot(ur);
+
+% Identificar os parametros a partir do experimento com relé
+
+
+
+
+%%
 
 
