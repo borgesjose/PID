@@ -28,7 +28,7 @@
 
     ftz = c2d(ft,Tc,'zoh')
 
-%% 2 - rele:
+%% 2 - Aplicando o rele:
 % Agora é o momento de aplicar o relé a planta: (rele com histerese)
 
 n = 200; % Numero de pontos de análise
@@ -49,11 +49,25 @@ plot(yr,'c-');
 hold on;
 plot(ur);
 
-% Identificar os parametros a partir do experimento com relé
+%% 3 Identificar os parametros a partir do experimento com relé:
 
+[gw,w,arm,Kp]=identificar(n, dh, eps,Tc,yr);
 
+Ku = -1/gw;
+Tu = w/(2*pi);
 
+L = 2;
 
-%%
+c = 1/Kp;
+b = sin(w*L)/(w*Ku);
+a = (c + cos(w*L))/(w^2);
 
+%% Definições do controlador AT-PID-FG: 
+
+Am = 3;
+
+Am_min = 2; 
+Am_max = 5;
+Theta_m_min = 45;
+Theta_m_max = 72;
 

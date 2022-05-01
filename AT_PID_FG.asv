@@ -7,7 +7,7 @@
 %  PID controllers for the Phase                      %
 %  and Gain Margins of the System                     % 
 %                                                     %
-%  -- Version: 1.0  - 20/02/2022                      %
+%  -- Version: 1.0  - 30/04/2022                      %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
 %% 1 - Tratando o processo:
@@ -49,11 +49,17 @@ plot(yr,'c-');
 hold on;
 plot(ur);
 
-% Identificar os parametros a partir do experimento com relé
+%% 3 Identificar os parametros a partir do experimento com relé
+[gw,w,arm]=ident1(n, dh, eps,Tc,yr);
 
+Ku = -1/gw;
+Tu = w/(2*pi);
 
+Kp = 
 
-
+c = ;
+b = ;
+a = (c + cos(w))/(w^2);
 %%
 
 
