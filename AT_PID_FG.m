@@ -46,11 +46,11 @@
 
     [yr,ur] = rele_h(n,Tc,d,eps,[p1,p2],k); 
 
-    figure;
-    grid;
-    plot(yr,'c-');
-    hold on;
-    plot(ur);
+%     figure;
+%     grid;
+%     plot(yr,'c-');
+%     hold on;
+%     plot(ur);
 
 %% 3 Identificar os parametros a partir do experimento com relé:
 
@@ -64,14 +64,19 @@
     c = 1/Kp;
     b = sin(w*L)/(w*Ku);
     a = (c + cos(w*L))/(w^2);
+    
 %% 3.1 teste modelo:
 % 
 % step(ft,50)
 % hold on;
-% Gp = exp(-s*L)/(a*s^2 + b*s + c)
+ Gp = exp(-s*L)/(a*s^2 + b*s + c)
 % step(Gp,50)
 % 
 % ft
+
+nyquist(ft)
+hold on
+nyquist(Gp)
 %% Definições do controlador AT-PID-FG: 
 
     Am = 3;
@@ -101,31 +106,20 @@ u(1)=0 ; u(2)=0 ; u(3)=0; u(4)=0;
 
 erro(1)=1 ; erro(2)=1 ; erro(3)=1; erro(4)=1;
 
-rlevel = 0.0;
-ruido = rlevel*rand(1,1000);
+rlevel = 0.1;
+ruido = rlevel*rand(1,nptos);
 
 for i=5:nptos,
 
-p1=p1+rlevel*rand;
-p2= p2+ruido(i);
-%k=(2/(2.5*3.75));
+P1(i) = p1+rlevel*rand; % Aplicando ruido na modelagem
+P2(i) = p2+ruido(i);  % Aplicando ruido na modelagem
+k = 2*P1(i)*P2(i); 
     
-a0=k/(p1*p2);
-a1=k/(-p1*(p2-p1));
-a2=k/(-p2*(p1-p2));
-x1=-exp(-p1*Tc);
-x2=-exp(-p2*Tc);
-x3=x1+x2;
-x4=exp(-(p1+p2)*Tc);
+[c0,c1,c2,r0,r1,r2] = discretiza_zoh(P1(i),P2(i),k,Tc); %chama a função que discretiza o processo utilizano um ZOH;
 
-c0=a0+a1+a2;
-c1=a0*x3+a1*(x2-1)+a2*(x1-1);
-c2=a0*x4-a1*x2-a2*x1;
-r0=1;
-r1=x3;
-r2=x4; 
-     if (i==550),r1 = - 1.84;r2 = 0.9109;  end
-     y(i)= -r1*y(i-1)-r2*y(i-2)+c0*u(i-2)+c1*u(i-3)+c2*u(i-4);
+     if (i==550),r1 = - 1.84;r2 = 0.9109;  end % Ruptura no modelo
+     
+     y(i)= -r1*y(i-1)-r2*y(i-2)+c0*u(i-2)+c1*u(i-3)+c2*u(i-4); % equação da diferença do processo
      
      erro(i)=ref(i)-y(i); %Erro
       
@@ -135,7 +129,7 @@ r2=x4;
 %             beta = -(Kc)*(1+2*((Td)/Tamostra)-(Tamostra/(2*(Ti))));
 %             gama = (Kc)*(Td)/Tamostra;
             
-            % new version
+      % new version
             alpha = Kc+ Kd/Tamostra + (Ki*Tamostra)/2;
             beta = -(Kc) - 2*((Kd)/Tamostra)+(Ki*Tamostra)/2;
             gama = (Kd)/Tamostra;
@@ -153,6 +147,8 @@ r2=x4;
      ITSE_t2 = objfunc(erro,tempo,'ITSE')
      ITAE_t2 = objfunc(erro,tempo,'ITAE')
      IAE_t2 = objfunc(erro,tempo,'IAE')
+     
+%plotar seinal de saida e  de controle:    
 figure;
 grid;
 plot(tempo,y,'g-');
@@ -160,5 +156,11 @@ hold on;
 plot(tempo,u);
 plot(tempo,ref);
 title(['AT-PID-FG:',num2str(rlevel), ' ISE:', num2str(ISE_t2), ', ITSE:' ,num2str(ITSE_t2),', IAE:' ,num2str(IAE_t2), ', ITAE:' ,num2str(ITAE_t2)])
-
+%%
+%plotar P1 e P2
+figure;
+grid;
+plot(tempo,P1,'g-');
+hold on;
+plot(tempo,P2);
 
