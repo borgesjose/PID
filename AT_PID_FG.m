@@ -67,16 +67,16 @@
     
 %% 3.1 teste modelo:
 % 
-% step(ft,50)
-% hold on;
- Gp = exp(-s*L)/(a*s^2 + b*s + c)
-% step(Gp,50)
+% % step(ft,50)
+% % hold on;
+%  Gp = exp(-s*L)/(a*s^2 + b*s + c)
+% % step(Gp,50)
+% % 
+% % ft
 % 
-% ft
-
-nyquist(ft)
-hold on
-nyquist(Gp)
+% nyquist(ft)
+% hold on
+% nyquist(Gp)
 %% Definições do controlador AT-PID-FG: 
 
     Am = 3;
@@ -106,7 +106,7 @@ u(1)=0 ; u(2)=0 ; u(3)=0; u(4)=0;
 
 erro(1)=1 ; erro(2)=1 ; erro(3)=1; erro(4)=1;
 
-rlevel = 0.1;
+rlevel = 0.0;
 ruido = rlevel*rand(1,nptos);
 
 for i=5:nptos,
@@ -117,7 +117,7 @@ k = 2*P1(i)*P2(i);
     
 [c0,c1,c2,r0,r1,r2] = discretiza_zoh(P1(i),P2(i),k,Tc); %chama a função que discretiza o processo utilizano um ZOH;
 
-     if (i==550),r1 = - 1.84;r2 = 0.9109;  end % Ruptura no modelo
+    % if (i==550),r1 = - 1.84;r2 = 0.9109;  end % Ruptura no modelo
      
      y(i)= -r1*y(i-1)-r2*y(i-2)+c0*u(i-2)+c1*u(i-3)+c2*u(i-4); % equação da diferença do processo
      
@@ -163,4 +163,5 @@ grid;
 plot(tempo,P1,'g-');
 hold on;
 plot(tempo,P2);
-
+%%
+save('C://Users/joseb\OneDrive/MESTRADO/Pesquisa - GRADUATE/MESTRADO/2 - PESQUISA/4 - RESULTADOS/SIMULATION/MATLAB/AT PID FG/simples/simples.mat')
